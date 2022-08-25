@@ -1,0 +1,70 @@
+def dfs(x,y,n,maze):
+    
+    global goal #goal을 global변수로 만들어줍니다.
+    
+    #재귀적 반복을 수행할때마다, dfs()함수에 들어오는 x,y좌표에 대한 방문처리를 수행합니다
+    #maze값을 1로 만들면 1은 이동하지 못하니까 방문처리를 수행한 것과 같습니다
+    maze[y][x] = 1 
+    
+    #상하좌우 델타배열을 생성하고
+    x_move = [0,0,1,-1]
+    y_move = [1,-1,0,0]
+    
+    #해당 x,y에 대하여 상하좌우 탐색을 시작합니다.
+    for i in range(4):
+
+        dx = x + x_move[i]
+        dy = y + y_move[i]
+
+        if dx >= 0 and dy >= 0 and dx <= n-1 and dy <= n-1: #이동한 좌표가 n*n배열안에 있다면
+
+            if maze[dy][dx] == 0: #maze에 넣어서, 0이라면 이동가능하다는 뜻이므로
+                
+                dfs(dx,dy,n,maze) #해당 좌표 dx,dy로 이동하고 다시 dfs()함수를 재귀적으로 반복합니다
+            
+            elif maze[dy][dx] == 3: #만약 해당 dx,dy를 넣어서 3이라면, 도착했다는 뜻이므로
+                
+                goal = True #global 변수 goal을 True로 바꿔줍니다.
+                    
+        
+        
+        
+        
+T = int(input())
+# 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
+for t in range(1, T + 1):
+    # ///////////////////////////////////////////////////////////////////////////////////
+    
+    n = int(input())
+    
+    maze = [list(map(int,input())) for _ in range(n)]
+    
+    ##시작점을 찾습니다
+    start = False
+
+    for y in range(n):
+        for x in range(n):
+            
+            if maze[y][x] == 2:
+                start = True
+                break
+        
+        if start:
+            break
+    ###
+    
+    ##goal을 했다는 뜻의  global변수를 생성하고
+    goal = False
+   
+    #maze 탐색을 수행합니다.
+    dfs(x,y,n,maze)
+    
+   
+    
+    if goal: #탐색을 수행하고 goal=True가 되었다면 도착했다는 의미입니다.
+        
+        print('#'+str(t),1,sep=' ')
+    
+    else: #탐색을 수행하고나서도 goal=False이면, 도착하지 못했다는 뜻입니다.
+        
+        print('#'+str(t),0,sep=' ')

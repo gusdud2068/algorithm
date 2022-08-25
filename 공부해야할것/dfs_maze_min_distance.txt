@@ -1,0 +1,92 @@
+def dfs(x,y,n,d,visited):
+    
+##모든 재귀 경로에 사용할 min 변수는 global 선언
+    global min_d 
+
+#####재귀경로를 탐색하다가, 현재 갱신된 min_d보다 중간에 거리 d가 커지면 return으로 탐색경로를 끊는다
+#####사용하지 않아도 시간초과하지 않는다
+    if min_d < d:
+        return
+
+#####해당 노드에서의 값이 3이라면, 도착점에 도달한 것이므로 더 이상 탐색할 필요가 없다
+##### 최소 거리를 갱신
+##### 문제에서 도착점까지 이동한 거리는 세지 않아서 -1
+    if maze[y][x] == 3:
+        
+        if min_d > d-1:
+            
+            min_d = d-1
+            return #도달하면 더이상 탐색할 필요가 없으므로 경로를 끊어준다
+
+    else:
+
+#도착점에 도달하지 못했다면 계속해서 dfs를 수행한다
+
+#현재 위치 x,y에서 방문 처리를 수행하고
+
+        visited[y][x] = 1
+
+#상하좌우 탐색을 시작한다
+        for ni,nj in [[0,1],[1,0],[0,-1],[-1,0]]:
+            
+#상하좌우 이동한 임시좌표
+            dx = x + ni
+            dy = y + nj
+
+##임시좌표가 n*n배열 이내에 존재하고, 방문배열 visited[dy][dx]가 0이면 방문하지 않은 것이고, maze[dy][dx]가 1이 아니면 이동가능하므로
+
+            if (dx >= 0 and dx <= n-1) and (dy >= 0 and dy <= n-1) and (visited[dy][dx] == 0) and (maze[dy][dx] != 1):
+                
+###그 점 dx,dy로 이동해서 탐색을 수행한다
+### 한번 이동했으니 거리는 d+1
+                dfs(dx,dy,n,d+1,visited)
+
+##dx,dy에 대한 dfs를 수행하고 나서, visited[dy][dx]=0으로 표기한 뒤에 새로운 반복문을 수행할때, 새로운 재귀경로에 새로운 visited를 가져가도록 초기화
+                visited[dy][dx] = 0
+        
+
+
+T = int(input())
+
+for t in range(1,T+1):
+    
+    n = int(input())
+
+    maze = [list(map(int,input())) for _ in range(n)]
+
+###시작점을 찾습니다
+
+    find = False #시작점을 찾았다는 것을 알리는 표시
+
+#n*n배열의 maze를 모두 순회하면서
+    for y in range(n):
+        
+        for x in range(n):
+            
+            if maze[y][x] == 2: #maze값이 2이면, 출발점이므로
+                
+                find = True  #찾았다는 것을 표시하고 반복문을 탈출함
+                break
+        
+        if find: #출발점을 찾았으면 바깥 반복문도 탈출함
+            
+            break
+    
+#n*n배열의 방문 배열을 초기화하고
+
+    visited = [[0]*n for _ in range(n)] 
+
+#n의 최댓값이 100이므로, 최소 거리는 많아야 10000을 넘지 않는다
+
+    min_d = 10000
+
+#dfs를 수행하면서, min_d가 갱신될 것
+
+    dfs(x,y,n,0,visited)
+
+#dfs를 수행해도 min_d가 초기값과 동일하다면, 도착점 3에 도달하지 못한 것
+    if min_d == 10000:
+        
+        min_d = 0 #그런 경우에 0으로 바꿔서 출력
+    
+    print('#'+str(t),min_d,sep=' ')
