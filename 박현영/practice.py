@@ -1,29 +1,22 @@
-def push(item,size):
-    global top
-    top +=1
-    if top== size:
-        print('overflow!')
-    else:
-        stack[top]=item
-size = 10
-stack = [0]*size
-top=-1
+def inorder(node):  # 중위 preorder 전 post후
+    global number
 
-push(10,size)
-top+=1
-stack[top]=20
+    if node > N:
+        return
+    left = node * 2
+    right = node * 2 + 1
+
+    inorder(left)
+    lst[node] = number
+    number += 1
+    inorder(right)
 
 
-def pop():
-    global top
-    if top == -1:
-        print('underflow')
-        return 0
-    else:
-        top-=1
-        return stack[top+1]
-print(pop())
+T = int(input())
+for tc in range(1, 1 + T):
+    N = int(input())
+    lst = [0] * (N + 1)  # 7
+    number = 1
 
-if top > -1:
-    top -=1
-    print(stack[top])
+    inorder(1)
+    print(f'#{tc} {lst[1]} {lst[N//2]}')
