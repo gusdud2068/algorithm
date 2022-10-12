@@ -1,0 +1,102 @@
+
+python -m venv venv
+ctr+ shift +p interpreter 별표 3.9.13 터미널 껐다 키기
+pip install -r requirements.txt (pip install django==3.2.13 /pip install ipython /pip install django-extensions
+django-admin startproject 여기다가이름 .
+python manage.py startapp articles
+setting 에서 ("movies",
+    "django_extensions", 넣기) ([BASE_DIR, 'templates',],)
+base.html (boot strap 들어가기)(<div class='container'>)({% block content %})(</div>)
+articles 안에  templates 만들기 또 폴더 하나 더 만들기
+urls.py 만들고
+(path 옆에 , include 넣기 path('movies/', include('movies.urls')),
+
+상위 movies에 url또 만들기(from django.urls import path
+from . import views
+
+app_name= 'movies'
+urlpatterns = [
+    path('',views.index, name='index'),
+])
+
+하위 movies에 index.html만들기
+
+python manage.py makemigrations
+
+------------------------------------세팅
+model에 class 만들기
+(class Movie(models.Model):
+    title = models.CharField(max_length=20)
+    audience = models.IntegerField()
+    release_date = models.DateField(auto_now=False, auto_now_add=False)
+    genre = models.CharField(max_length=30)
+    score = models.FloatField()
+    poster_url = models.TextField()
+    description = models.TextField())
+
+url에 넣기
+
+views (render, redirect)
+(from .models import Movie #class 이거 적고
+def index(request):
+    movies = Movie.objects.all()
+    context = {
+        'movies': movies
+}
+return render(request,'movies/index.html', context)
+    )
+
+python manage.py makemigrations
+python manage.py migrate
+
+html만들기
+
+value={{movie.release_date|date:'Y-m-d'}}
+
+
+
+
+
+
+
+python manage.py runserver
+python -m venv ./venv
+pip install -r requirements.txt
+django-admin startproject <pjt>
+python manage.py startapp articles
+
+
+python manage.py shell_plus
+python manage.py makemigrations
+python manage.py migrate
+
+Article.objects.all()
+
+Article.objects.all().filter(title__endswith="d")
+
+exit
+
+
+
+1. python -m venv venv
+2. ctr shift p 인터프리터 - 터미널 다시 키기
+
+
+깃플젝올리는법
+
+클론 주소복사
+git bash에서
+
+새폴더 생성
+git clone 쉬프트인설트
+
+복붙해오기
+
+이그노어 파일넣기
+git add .
+
+git commit -m " "
+
+git push origin master
+
+

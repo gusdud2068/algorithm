@@ -1,0 +1,74 @@
+def dfs(x,y,n,maze):
+    
+    stack = []
+    
+    #상하좌우 4가지 방향으로 갈 수 있으므로 이를 나타내는 델타배열을 생성
+    x_move = [0,0,1,-1]
+    y_move = [1,-1,0,0]
+    
+    #처음에 시작점이 들어오는데 이미 방문했다는 뜻으로 2 대신에 1로 만들어서
+    #더 이상 이동하지 못하게 합니다
+    maze[y][x] = 1
+    
+    while 1:
+        
+        for i in range(4): #x,y에 대하여 4가지 방향을 모두 탐색해봅니다
+
+            dx = x + x_move[i]
+            dy = y + y_move[i]
+
+            if dx >= 0 and dy >= 0 and dx <= n-1 and dy <= n-1: #이동한 좌표가 미로의 n*n범위 내의 좌표라면...
+
+                if maze[dy][dx] == 0: #maze[dy][dx]에 실제로 넣어서 0이라면, 이동가능하다는 뜻이므로
+                    
+                    stack.append((x,y)) #스택에 이동하기 전 현재 좌표를 넣어주고,
+
+                    x = dx
+                    y = dy #다음 이동좌표로 변경시켜서, 실제로 이동시킨다음
+                    maze[y][x] = 1 #이동한 좌표는 더 이상 이동하지 못한다는 뜻으로 maze에서 1로 바꿔줍니다
+                    break #이동 좌표를 한번 찾았으면  break로 바로 탈출합니다
+                    
+                elif maze[dy][dx] == 3: #탐색하다가 도착점 3을 찾게된다면
+
+                    return 1            #바로 1을 return하여 도착할 수 있다는 표시를 해줍니다.
+        
+        else: #break에 걸리지 않고 for문을 모두 탐색했다면,
+            
+            if stack != []: #stack에 방문했던 좌표들이 남아있다면,
+                
+                x,y = stack.pop() #방문했던 좌표들을 빼주고, 뒷걸음질을 수행합니다.
+            
+            else: #stack에 더 이상 남아있지 않다면
+                break #더 이상 탐색을 수행할 수 없으므로 while문을 탈출합니다
+    
+    return 0 #while문을 탈출할때까지 return 1을 하지 못했다면, 도착점으로 가지 못했으므로 0을 return합니다.
+        
+        
+        
+T = int(input())
+# 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
+for t in range(1, T + 1):
+    # ///////////////////////////////////////////////////////////////////////////////////
+    
+    n = int(input())
+    
+    maze = [list(map(int,input())) for _ in range(n)]
+    
+    
+    ##for문을 전부 순회하여 시작점을 찾습니다##
+    
+    start = False
+
+    for y in range(n):
+        for x in range(n):
+            
+            if maze[y][x] == 2: ##2가 출발점이므로, 2를 찾았다면
+                start = True    ## 시작점을 찾았다는 의미로 start=True
+                break
+        
+        if start: #start는 True이면 시작점을 찾았다는 의미이므로 반복문을 전부 탈출합니다
+            break
+    
+    print('#'+str(t),dfs(x,y,n,maze),sep=' ')
+
+    # ///////////////////////////////////////////////////////////////////////////////////

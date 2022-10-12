@@ -1,0 +1,83 @@
+def dfs(x,y,n,maze):
+    
+    #재귀적 반복을 수행할때마다 들어오는 x,y좌표에 대한 방문처리를 수행합니다.
+    
+    #해당 x,y에 대한 maze의 값을 1로 바꾸면 그 곳으로는 이동하지 못하므로 방문한 것이나 마찬가지입니다.
+    
+    maze[y][x] = 1
+    
+    #상하좌우 델타배열을 생성하고
+    
+    x_move = [0,0,1,-1]
+    y_move = [1,-1,0,0]
+        
+    #x,y좌표에 대하여 4가지 상하좌우에 대해서 탐색을 수행합니다.
+    
+    for i in range(4):
+
+        dx = x + x_move[i]
+        dy = y + y_move[i]
+
+        if dx >= 0 and dy >= 0 and dx <= n-1 and dy <= n-1: #이동한 좌표가 n*n배열 범위내에 존재한다면 이동이 가능하고
+
+            if maze[dy][dx] == 0 or maze[dy][dx] == 3: #maze값이 0이나 3이면 이동이 가능하므로,
+                
+                dfs(dx,dy,n,maze) #해당좌표 dx,dy로 이동하고 재귀적반복으로 탐색을 수행합니다.
+                    
+        
+        
+        
+        
+T = int(input())
+# 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
+for t in range(1, T + 1):
+    # ///////////////////////////////////////////////////////////////////////////////////
+    
+    n = int(input())
+    
+    maze = [list(map(int,input())) for _ in range(n)]
+    
+    
+    ##시작점을 찾습니다
+    
+    start = False
+
+    for y in range(n):
+        for x in range(n):
+            
+            if maze[y][x] == 2:
+                start = True
+                break
+        
+        if start:
+            break
+    
+    #dfs함수를 수행하여 maze에 대한 탐색을 수행합니다.
+    dfs(x,y,n,maze)
+    
+    #모든 탐색을 수행하고 나서, 3이 존재하지 않는다면 도착을 했다는 뜻입니다.
+    
+    #maze를 모두 순회하여 3이 존재하는지 아닌지 순회합니다.
+    goal = True
+    for y in range(n):
+        for x in range(n):
+            
+            if maze[y][x] == 3:
+                goal = False #3이 존재한다면, goal=False로 바꿔주고 도착하지 못했다는 뜻입니다.
+                break
+        
+        if goal == False:
+            break
+    
+    if goal: #goal이 True라면 3이 존재하지 않으므로 도착했다는 뜻입니다.
+        
+        print('#'+str(t),1,sep=' ')
+    
+    else: #goal이 False라면 모두 탐색하더라도 3이 존재하므로 도착하지 못했다는 뜻입니다.
+        
+        print('#'+str(t),0,sep=' ')
+        
+    
+    
+    
+    # ///////////////////////////////////////////////////////////////////////////////////
