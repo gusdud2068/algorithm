@@ -1,0 +1,17 @@
+
+장고 디테일 2
+
+1.모델부터 만들고
+class article (앱에서 s뺀 단수 입력)
+foreign key
+charfield
+
+2.project urls 에 앱 추가 path('앱/', include('앱.urls'))
+
+3.앱에  urls 추가 그리고 채우기
+
+4.앱views 채우기
+
+5.앱form추가 그리고 채우기
+
+6.앱template추가 그리고 채우기
