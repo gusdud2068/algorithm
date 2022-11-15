@@ -1,0 +1,15 @@
+CRUD
+Form
+
+View(deco,authentic)
+
+account ( login, logout, signup, delete, update, changepassword)
+
+
+DB
+)
+N:1	ForeignKey
+게시글댓글, 유저댓글, 게시글유저
+M:N	ManyToManyFielid
+게시글좋아요, 유저간 팔로우
+)
