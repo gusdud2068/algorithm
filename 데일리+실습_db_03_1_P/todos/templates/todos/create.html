@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Create<h1>
+    <form action ="{%url 'todos:create' %}" method="POST">
+        {% csrf_token %}
+        {{form.as_p}} <!-- p의 띄어쓰기-->
+        <button>Create</button>
+    </form>
+
+{% endblock content %}
